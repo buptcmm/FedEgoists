@@ -408,17 +408,7 @@ if __name__ == '__main__':
             args)
         client_weights, train_loaders, valid_loaders, test_loaders = get_dataloader(args, train_dataset, valid_dataset,
                                                                                     test_dataset)
-        traindata_cls_counts = np.array([[769, 8],
-                                         [722, 21],
-                                         [739, 6],
-                                         [712, 18],
-                                         [701, 21],
-                                         [361, 16],
-                                         [384, 7],
-                                         [398, 10],
-                                         [405, 10],
-                                         [402, 15]]
-                                        )
+        traindata_cls_counts = None
         Data = data(args, dataset_train, dataset_test, dict_users_train, dict_users_test, users_used=users_used,traindata_cls_counts=traindata_cls_counts)
     else:
         dataset_train, dataset_test, dict_users_train, dict_users_test,data_distributions,traindata_cls_counts = get_data(args)

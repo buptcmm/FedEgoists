@@ -787,6 +787,22 @@ class Training_all_eicu(object):
 
             self.logger.info("hyper iteration: {}, input_ray: {}.".format(iteration, input_ray_numpy))
 
+            X, Y = self.valid_input(user)
+            pred, loss = self.hnet(X, Y, user)
+            acc = self.acc_auc(pred, Y)
+            self.optim.zero_grad()
+            self.hnet.input_ray.grad = torch.zeros_like(self.hnet.input_ray.data)
+            loss.backward()
+            self.hnet.input_ray.data.add_(-self.hnet.input_ray.grad * self.args.lr_prefer)
+            self.hnet.input_ray.data = torch.clamp(self.hnet.input_ray.data, self.args.eps_prefer, 1)
+            self.hnet.input_ray.data = self.hnet.input_ray.data / torch.sum(self.hnet.input_ray.data)
+            input_ray_numpy = self.hnet.input_ray.data.cpu().numpy()[0]
+
+            self.logger.info('ray iteration: {},  ray: {}'.format(iteration, self.hnet.input_ray.data))
+
+            if (iteration % 10 == 0):
+                acc, auc, loss = self.personal_test(user)
+
 
 
 
