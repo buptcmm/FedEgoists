@@ -308,7 +308,10 @@ def MergePath(Z_b,Z_c,new_group,aja_Bene,Compet_Matrix,logger):
             all_cycles = list(nx.simple_cycles(G_z))
             cycle_containing_node = [cycle for cycle in all_cycles if node in cycle]
             f = 0
+	    break_flag = 0
             for v_s in range(len(Z_b)):
+		if break_flag:
+		    break
                 for v_t in range(len(Z_b)):
                     if v_t != v_s and nx.has_path(G_z, source=v_s, target=v_t):
                         if (v_s != node and v_t != node and len(new_group[v_s]) >= 2 and len(new_group[v_t]) >= 2) or (
@@ -342,6 +345,8 @@ def MergePath(Z_b,Z_c,new_group,aja_Bene,Compet_Matrix,logger):
                             f = 1
                             Z_b,Z_c,new_group = MergeCycle(Z_b,Z_c,new_group,aja_Bene,Compet_Matrix,logger)
                             break
+		    if break_flag:
+                        break
             if (f == 0):
                 flag1[node] = 1
                 Y = len(new_group)
