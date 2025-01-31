@@ -344,6 +344,7 @@ def MergePath(Z_b,Z_c,new_group,aja_Bene,Compet_Matrix,logger):
                                 continue
                             f = 1
                             Z_b,Z_c,new_group = MergeCycle(Z_b,Z_c,new_group,aja_Bene,Compet_Matrix,logger)
+			    break_flag = 1
                             break
 		    if break_flag:
                         break
